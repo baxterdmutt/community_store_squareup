@@ -1,5 +1,5 @@
-# Concretecms-Community-Store-SquareUp
-SquareUp payment gateway addon for the Concretecms Community Store 2022
+# Concretecms-Community-Store-SquareUp 2022
+SquareUp payment gateway addon for the Concretecms Community Store
 
 https://developer.squareup.com/reference/square
 
