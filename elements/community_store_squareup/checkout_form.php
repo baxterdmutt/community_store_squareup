@@ -1,6 +1,10 @@
 <?php defined('C5_EXECUTE') or die(_("Access Denied."));
   extract($vars);
 use Square\Environment;
+  	
+  	if (sizeof($pmEnabled)>1) {
+  	$multy="true";
+  	}
 //set the Square sdk
 $web_payment_sdk_url = "https://sandbox.web.squarecdn.com/v1/square.js";
 ?>
@@ -15,7 +19,8 @@ $web_payment_sdk_url = "https://sandbox.web.squarecdn.com/v1/square.js";
 	window.locationId = "<?php echo $location_Id;?>";
 	window.currency = "<?php echo $currency;?>";
 	window.pmID = "<?php echo $pmID;?>";
-	window.otherPm = "<?php echo $pmID-1;?>";
+	window.multy = "<?php echo $multy;?>";
+
  // insert a div to display Square information into
     let cardDiv = document.createElement("div");
     cardDiv.id="Cardnotice";
@@ -25,13 +30,11 @@ $web_payment_sdk_url = "https://sandbox.web.squarecdn.com/v1/square.js";
     parentDiv.insertBefore(cardDiv, cardEl);
 
  function toggleModal(pay) {
- //Toggle popup modal 
-  //  if (!pay) {document.getElementById("payment-method1").checked = "checked";}
-    $(".store-payment-method-container[data-payment-method-id='" + otherPm + "']").checked="checked";
- 	$(".store-payment-method-container[data-payment-method-id='" + pmID + "']").addClass('hidden');
-   $(".store-payment-method-container[data-payment-method-id='" + otherPm + "']").removeClass('hidden');
-   // document.getElementsByClassName('store-payment-method-container')[0].
-   // classList.remove('hidden');
+ //Toggle popup modal only if there are mutliple payment methods 
+ 	if (multy){
+    $("input[type='radio'][data-payment-method-id='" + pmID + "']").prop('checked', false);
+    $(".store-payment-method-container[data-payment-method-id='" + pmID + "']").addClass('hidden');
+    }
  } 
  
  function notice(content) {
@@ -74,7 +77,6 @@ $web_payment_sdk_url = "https://sandbox.web.squarecdn.com/v1/square.js";
 //call the Square form 
  cardPay();
 
-
 </script>
 
 <div class=store-whiteout" id="modal">
@@ -91,7 +93,7 @@ $web_payment_sdk_url = "https://sandbox.web.squarecdn.com/v1/square.js";
   	<form method="POST" action="squarepayment/recievetoken" id="payment-form">
   	<button class = "btn btn-success pull-right float-end" id="pay-button"  type="button">Confirm card</button>
   	<?php
-  	//if more than one payment type is availabel add a cancel button
+  	//if more than one payment type is availabel add a cancel button to the square modal
   	if (sizeof($pmEnabled)>1) { ?>
   		<span onclick= "toggleModal()"
   		 class="pull-left float-start store-btn-cart-modal-continue btn btn-default btn-secondary" href="#"> Cancel card </span>
@@ -103,13 +105,3 @@ $web_payment_sdk_url = "https://sandbox.web.squarecdn.com/v1/square.js";
 	</form>
 	</div>
 </div>
- 
-
-
-
-
-
-
-
-
-
