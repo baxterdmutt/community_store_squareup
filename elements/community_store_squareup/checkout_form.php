@@ -15,9 +15,9 @@ $web_payment_sdk_url = "https://sandbox.web.squarecdn.com/v1/square.js";
 	window.locationId = "<?php echo $location_Id;?>";
 	window.currency = "<?php echo $currency;?>";
 	window.pmID = "<?php echo $pmID;?>";
- 
+	window.otherPm = "<?php echo $pmID-1;?>";
  // insert a div to display Square information into
- 	let cardDiv = document.createElement("div");
+    let cardDiv = document.createElement("div");
     cardDiv.id="Cardnotice";
     cardDiv.innerHTML = "";
     let cardEl = document.getElementById('store-checkout-payment-method-options');
@@ -26,10 +26,12 @@ $web_payment_sdk_url = "https://sandbox.web.squarecdn.com/v1/square.js";
 
  function toggleModal(pay) {
  //Toggle popup modal 
-    if (!pay) {document.getElementById("payment-method1").checked = "checked";}
+  //  if (!pay) {document.getElementById("payment-method1").checked = "checked";}
+    $(".store-payment-method-container[data-payment-method-id='" + otherPm + "']").checked="checked";
  	$(".store-payment-method-container[data-payment-method-id='" + pmID + "']").addClass('hidden');
-    document.getElementsByClassName('store-payment-method-container')[0].
-    classList.remove('hidden');
+   $(".store-payment-method-container[data-payment-method-id='" + otherPm + "']").removeClass('hidden');
+   // document.getElementsByClassName('store-payment-method-container')[0].
+   // classList.remove('hidden');
  } 
  
  function notice(content) {
@@ -58,11 +60,9 @@ $web_payment_sdk_url = "https://sandbox.web.squarecdn.com/v1/square.js";
                }
          } catch (e) {
              if (e.message) {
-                 // window.showError(`Error: ${e.message}`);
                 let  mess= "<H2>An error has occured!</br></H2><p class='alert alert-warning small'>"+e.message+"</p>";
                  notice(mess);
              } else {
-                  //window.showError('Something went wrong');
              	let mess = '<H2>An error has occured!</br></H2><p class="alert alert-warning small"> Something bad has happened!</p>';
                 notice(mess); 
              }
@@ -71,15 +71,14 @@ $web_payment_sdk_url = "https://sandbox.web.squarecdn.com/v1/square.js";
 	const payButton = document.getElementById('pay-button');
 	payButton.addEventListener('click', eventHandler);
  }
- 
+//call the Square form 
  cardPay();
 
-//submit the form
+
 </script>
 
 <div class=store-whiteout" id="modal">
 	<div class="store-cart-modal clearfix store-cart-modal-active" id="square-card">
-		<a href="#" class="store-modal-exit">×</a>
     		<h3>Square Payment Gateway</h3>
       		<p class="alert alert-success"><strong>Digital Payments</strong> Enter card information</p>
       	
@@ -91,13 +90,18 @@ $web_payment_sdk_url = "https://sandbox.web.squarecdn.com/v1/square.js";
 	</div>
   	<form method="POST" action="squarepayment/recievetoken" id="payment-form">
   	<button class = "btn btn-success pull-right float-end" id="pay-button"  type="button">Confirm card</button>
-  	<span onclick= "toggleModal()"
-  		 class="pull-left float-start store-btn-cart-modal-continue btn btn-default btn-secondary" href="#"> Cancel card </span>	
+  	<?php
+  	//if more than one payment type is availabel add a cancel button
+  	if (sizeof($pmEnabled)>1) { ?>
+  		<span onclick= "toggleModal()"
+  		 class="pull-left float-start store-btn-cart-modal-continue btn btn-default btn-secondary" href="#"> Cancel card </span>
+  	<?php
+  	}
+  	?>
+  		
 	<input type="hidden" id="pay-token" name="token">
-	</form>			
-		
+	</form>
 	</div>
-
 </div>
  
 

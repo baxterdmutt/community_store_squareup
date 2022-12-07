@@ -48,6 +48,7 @@ class CommunityStoreSquareupPaymentMethod extends StorePaymentMethod
 
         $this->set('squareCurrencies', $currencies);
     }
+  
     public function save(array $data = [])
     {
         Config::save('community_store_squareup.mode', $data['squareMode']);
@@ -59,14 +60,14 @@ class CommunityStoreSquareupPaymentMethod extends StorePaymentMethod
         Config::save('community_store_squareup.liveAccessToken', $data['squareLiveAccessToken']);
         Config::save('community_store_squareup.liveLocation', $data['squareLiveLocation']);
     }
+  
     public function validate($args, $e)
     {
         return $e;
     }
+ 
     public function checkoutForm()
     {
-        
-        
         $customer = new StoreCustomer();
         $currency = Config::get('community_store_squareup.currency');
         $mode =  Config::get('community_store_squareup.mode');
@@ -91,7 +92,8 @@ class CommunityStoreSquareupPaymentMethod extends StorePaymentMethod
         $currencyMultiplier = StorePrice::getCurrencyMultiplier($currency);
         $this->set('amount', number_format(StoreCalculator::getGrandTotal() * $currencyMultiplier, 0, '', ''));
         
-//	Prepare for store payment method (ie: invoice or square)	
+//	Prepare for store payment method (ie: invoice or square)
+        $this->set('pmEnabled', StorePaymentMethod::getEnabledMethods());
         $pmID = StorePaymentMethod::getByHandle('community_store_squareup')->getID();
         $this->set('pmID', $pmID);
         $years = array();
@@ -207,12 +209,6 @@ class CommunityStoreSquareupPaymentMethod extends StorePaymentMethod
             return array ('error'=>1, 'errorMessage '=>'An unknown error occured');
         }
     }
-
- 
-
-
-
-
 
     public function getPaymentMethodName()
     {
