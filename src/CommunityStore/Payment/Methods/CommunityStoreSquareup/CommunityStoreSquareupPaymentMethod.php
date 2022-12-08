@@ -72,8 +72,6 @@ class CommunityStoreSquareupPaymentMethod extends StorePaymentMethod
         $currency = Config::get('community_store_squareup.currency');
         $mode =  Config::get('community_store_squareup.mode');
   
-  //      $mode = Config::get('community_store_squareup.mode');
-        $this->set('mode', $mode);
         $this->set('currency', Config::get('community_store_squareup.currency'));
 
         if ($mode == 'live') {
@@ -108,10 +106,10 @@ class CommunityStoreSquareupPaymentMethod extends StorePaymentMethod
     {
         $currency = Config::get('community_store_squareup.currency');
         $mode =  Config::get('community_store_squareup.mode');
-        if ($mode == 'sandbox') {
-            $Access_Token = Config::get('community_store_squareup.sandboxAccessToken');
-        } else {
+        if ($mode == 'live') {
             $Access_Token = Config::get('community_store_squareup.liveAccessToken');
+        } else {
+            $Access_Token = Config::get('community_store_squareup.sandboxAccessToken');
         }
 // Alert for debugging purposes only
         // Log::addEntry("Start with submitPayment", t('Community Store Square'));
