@@ -77,9 +77,11 @@ class CommunityStoreSquareupPaymentMethod extends StorePaymentMethod
         if ($mode == 'live') {
             $this->set('ApplicationId', Config::get('community_store_squareup.liveApplicationId'));
             $this->set('location_Id', Config::get('community_store_squareup.liveLocation'));
+            $this->set('web_payment_sdk_url', "https://web.squarecdn.com/v1/square.js");
         } else {
             $this->set('ApplicationId', Config::get('community_store_squareup.sandboxApplicationId'));
             $this->set('location_Id', Config::get('community_store_squareup.sandboxLocation'));
+            $this->set('web_payment_sdk_url', "https://sandbox.web.squarecdn.com/v1/square.js");
         }
       
         $this->set('email', $customer->getEmail());

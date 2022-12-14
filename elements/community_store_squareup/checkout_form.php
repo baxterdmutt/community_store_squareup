@@ -5,8 +5,6 @@ use Square\Environment;
   	if (sizeof($pmEnabled)>1) {
   	$multy="true";
   	}
-//set the Square sdk
-$web_payment_sdk_url = "https://sandbox.web.squarecdn.com/v1/square.js";
 ?>
   <!-- Copyright GPL-3.0 MIT License copyright Roger Andrews 2022 -->
   
@@ -15,9 +13,8 @@ $web_payment_sdk_url = "https://sandbox.web.squarecdn.com/v1/square.js";
  
  <script type = "text/javascript">
  //set Square values
- 	window.applicationId = "<?php echo $ApplicationId;?>";
-	window.locationId = "<?php echo $location_Id;?>";
-	window.currency = "<?php echo $currency;?>";
+ 	let applicationId = "<?php echo $ApplicationId;?>";
+	let locationId = "<?php echo $location_Id;?>";
 	window.pmID = "<?php echo $pmID;?>";
 	window.multy = "<?php echo $multy;?>";
 
@@ -44,7 +41,7 @@ $web_payment_sdk_url = "https://sandbox.web.squarecdn.com/v1/square.js";
  <!--Configure the Web Payments SDK and Card payment method-- >
 
  async function cardPay() {
-     const payments = Square.payments(window.applicationId, window.locationId);
+     const payments = Square.payments(applicationId, locationId);
      const card = await payments.card();
      await card.attach('#card-container');
 
